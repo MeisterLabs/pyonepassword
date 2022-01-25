@@ -110,6 +110,13 @@ class OPListEventsException(OPCmdFailedException):
         super().__init__(stderr_out, returncode)
 
 
+class OPListItemsException(OPCmdFailedException):
+    MSG = "1Passworm 'list items' failed."
+
+    def __init__(self, stderr_out, returncode):
+        super().__init__(stderr_out, returncode)
+
+
 class OPInvalidItemException(_OPAbstractException):
     def __init__(self, msg):
         super().__init__(msg)

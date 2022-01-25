@@ -18,7 +18,8 @@ from .py_op_exceptions import (
     OPSignoutException,
     OPForgetException,
     OPGetCreatedItemException,
-    OPListEventsException
+    OPListEventsException,
+    OPListItemsException
 )
 
 
@@ -152,6 +153,18 @@ class _OPPrivate(_OPCommandInterface):
         vault_json = super()._get_vault(vault_name_or_uuid, decode="utf-8")
         vault = OPVault(vault_json)
         return vault
+
+    def list_items(self):
+        lookup_argv = [self.op_path, "list", "items"]
+
+        try:
+            output = self._run(
+                lookup_argv, capture_stdout=True, decode="utf-8")
+        except OPCmdFailedException as ocfe:
+            raise OPListItemsExcpetion.from_opexception(ocfe) from ocfe
+
+        item_dict = json.loads(output)
+        return item_dict
 
     def get_group(self, group_name_or_uuid: str) -> OPGroup:
         """
